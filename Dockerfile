@@ -1,5 +1,6 @@
-FROM robbertkl/base
-MAINTAINER Robbert Klarenbeek <robbertkl@renbeek.nl>
+FROM base:latest
+
+LABEL maintainer="Robert Schumann <rs@n-os.org>"
 
 # Install services
 RUN cleaninstall \
