@@ -1,21 +1,32 @@
-FROM base:latest
+# debian 11 bullseye - released august 2021
+FROM debian:11-slim
 
 LABEL maintainer="Robert Schumann <rs@n-os.org>"
 
-# Install services
+COPY manifest /
+
+RUN cleanupgrade
 RUN cleaninstall \
+    ca-certificates \
+    curl \
+    entr \
+    gettext-base \
+    git \
+    lsb-release \
+    vim-tiny \
+    ngrep \
+    procps \
     cron \
     rsyslog
+
+# Environment variables
+ENV TERM=xterm
 
 # Install s6-overlay
 RUN VERSION=`latestversion just-containers/s6-overlay` \
     && curl -sSL "https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-amd64.tar.gz" \
     | tar xzf - -C /
 RUN sed -i "s/s6-nuke -th/s6-nuke -t/" /etc/s6/init/init-stage3
-
-# Copy own stuff
-COPY bin /usr/bin
-COPY etc /etc
 
 # Configure services
 RUN touch /var/log/messages \
