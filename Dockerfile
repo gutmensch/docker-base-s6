@@ -5,6 +5,8 @@ LABEL maintainer="Robert Schumann <rs@n-os.org>"
 
 COPY manifest /
 
+ENV TERM=xterm
+
 RUN cleanupgrade
 RUN cleaninstall \
     ca-certificates \
@@ -18,9 +20,6 @@ RUN cleaninstall \
     procps \
     cron \
     rsyslog
-
-# Environment variables
-ENV TERM=xterm
 
 # Install s6-overlay
 RUN VERSION=`latestversion just-containers/s6-overlay` \
