@@ -106,7 +106,7 @@ String getDockerTag() {
         return "${sdf.format(date)}.${shortHash}.b${BUILD_ID}"
     }
     def tagId = sh(script: 'cat ./TAG_ID', returnStdout: true).trim()
-    if (tagId ==~ /^[A-Z_]+$/) {
+    if (tagId ==~ /^[0-9A-Z_]+$/) {
         return sh(script: "awk -F= '/ARG ${tagId}=/{print \$2}' Dockerfile", returnStdout: true).trim()
     }
     else {
