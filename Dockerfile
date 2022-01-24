@@ -1,6 +1,8 @@
 # debian 11 bullseye - released august 2021
 FROM debian:11-slim
 
+ARG S6_VERSION=2.2.0.3
+
 LABEL maintainer="Robert Schumann <rs@n-os.org>"
 
 COPY manifest /
@@ -22,9 +24,8 @@ RUN cleaninstall \
     rsyslog
 
 # Install s6-overlay
-RUN VERSION=`latestversion just-containers/s6-overlay` \
-    && curl -sSL "https://github.com/just-containers/s6-overlay/releases/download/v${VERSION}/s6-overlay-amd64.tar.gz" \
-    | tar xzf - -C /
+RUN curl -sSL "https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-amd64.tar.gz" \
+    | tar xvzf - -C /
 RUN sed -i "s/s6-nuke -th/s6-nuke -t/" /etc/s6/init/init-stage3
 
 # Configure services
